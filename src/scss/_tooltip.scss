@@ -1,0 +1,74 @@
+@mixin tooltip {
+    $horizontal-notch-size: 5px;
+    $vertical-notch-size: 5px;
+    $tooltip-background-color: rgba($blue-gray, 0.9);
+    
+    .tooltip {
+        z-index: 3000;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        background-color: $tooltip-background-color;
+        @include border-radius($standard-border-radius);
+        color: #fff;
+        padding: 3px 10px;
+    
+        &.tooltip-top, &.tooltip-bottom {
+            .notch {
+                margin-left: -$vertical-notch-size;
+            }
+        }
+    
+        &.tooltip-top {
+            .notch {
+                @include tooltip-notch;
+                left: 50%;
+                bottom: -$vertical-notch-size;
+                border-left: $vertical-notch-size solid transparent;
+                border-right: $vertical-notch-size solid transparent;
+                border-top: $vertical-notch-size solid $tooltip-background-color;
+            }
+        }
+        &.tooltip-right {
+            .notch {
+                @include tooltip-notch;
+                top: 7px;
+                left: -$horizontal-notch-size;
+                border-top: $horizontal-notch-size solid transparent;
+                border-bottom: $horizontal-notch-size solid transparent;
+                border-right: $horizontal-notch-size solid $tooltip-background-color;
+            }
+        }
+        &.tooltip-bottom {
+            .notch {
+                @include tooltip-notch;
+                top: -$vertical-notch-size;
+                left: 50%;
+                border-left: $vertical-notch-size solid transparent;
+                border-right: $vertical-notch-size solid transparent;
+                border-bottom: $vertical-notch-size solid $tooltip-background-color;
+            }
+        }
+        &.tooltip-left {
+            .notch {
+                @include tooltip-notch;
+                top: 7px;
+                right: -$horizontal-notch-size;
+                border-top: $horizontal-notch-size solid transparent;
+                border-bottom: $horizontal-notch-size solid transparent;
+                border-left: $horizontal-notch-size solid $tooltip-background-color;
+            }
+        }
+    }
+}
+
+@mixin tooltip-notch {
+    position: absolute;
+    border-top: 0;
+    padding: 0;
+    width: 0;
+    height: 0;
+    /* ie6 height fix */
+    font-size: 0;
+    line-height: 0;
+}
