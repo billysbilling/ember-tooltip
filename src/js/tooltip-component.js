@@ -72,7 +72,7 @@ module.exports = Em.Component.extend({
         this.set('position', positionName);
         position.of = view.$();
         if (this.get('state') != 'inDOM') {
-            this.appendTo(Billy.rootElement);
+            this.appendTo(this.container.lookup('application:main').get('rootElement'));
             this.on('didInsertElement', function() {
                 self.$().css('opacity', 0);
                 self.show(view, message, positionName);
