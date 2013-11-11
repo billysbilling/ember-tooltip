@@ -1,10 +1,13 @@
 {
   "name": "ember-tooltip",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "homepage": "https://github.com/billysbilling/ember-tooltip",
   "main": "src/js/tooltip.js",
   "billy-builder": {
-    "include": ["src/js", "src/templates"]
+    "include": [
+      "src/js",
+      "src/templates"
+    ]
   },
   "license": "MIT",
   "ignore": [
