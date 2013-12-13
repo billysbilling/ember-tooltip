@@ -12,6 +12,10 @@
         @include border-radius($standard-border-radius);
         color: #fff;
         padding: 3px 10px;
+
+        .message {
+            white-space: pre;
+        }
     
         &.tooltip-top, &.tooltip-bottom {
             .notch {
