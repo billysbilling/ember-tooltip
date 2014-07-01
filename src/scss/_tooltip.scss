@@ -2,9 +2,8 @@
     $horizontal-notch-size: 5px;
     $vertical-notch-size: 5px;
     $tooltip-background-color: rgba($blue-gray, 0.9);
-    
+
     .tooltip {
-        z-index: 3000;
         position: absolute;
         top: 0px;
         left: 0px;
@@ -16,13 +15,13 @@
         .message {
             white-space: pre;
         }
-    
+
         &.tooltip-top, &.tooltip-bottom {
             .notch {
                 margin-left: -$vertical-notch-size;
             }
         }
-    
+
         &.tooltip-top {
             .notch {
                 @include tooltip-notch;
