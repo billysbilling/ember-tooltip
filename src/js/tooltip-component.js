@@ -1,10 +1,10 @@
 module.exports = Em.Component.extend({
     template: require('../templates/tooltip'),
-    
+
     classNameBindings: [':tooltip', 'positionClassName'],
 
     position: 'top',
-    
+
     positions: {
         top: {
             my: 'center bottom',
@@ -27,16 +27,16 @@ module.exports = Em.Component.extend({
             at: 'left-5 center'
         }
     },
-    
+
     positionClassName: function() {
         var pos = this.get('position').replace(/(Left|Right)$/, '');
         return 'tooltip-' + pos;
     }.property('position'),
 
     isVisible: false,
-    
+
     delay: 200,
-    
+
     messageEl: function() {
         return this.$('.message');
     }.property(),
@@ -54,7 +54,7 @@ module.exports = Em.Component.extend({
             }, this.get('delay'));
         }
     },
-    
+
     scheduleHide: function() {
         var self = this;
         clearTimeout(this.scheduleTimeout);
@@ -64,7 +64,7 @@ module.exports = Em.Component.extend({
             });
         }, this.get('delay'));
     },
-    
+
     show: function(view, message, positionName) {
         positionName = positionName || 'top';
         var self = this,
@@ -88,7 +88,29 @@ module.exports = Em.Component.extend({
         }, 200);
         el.position(position);
     },
-    
+
+    /**
+     * Places the tooltip element's z-index 1 higher than the highest z-index found
+     *
+     * @private
+     */
+    _updateZIndex: function (){
+        var highest = Math.max.apply(null,
+            $.map($('body > *'), function(el) {
+                var $el = $(el);
+                if ($el.css('position') !== 'static') {
+                    return Number($el.css('z-index')) || 1;
+                }
+                return 1;
+            }));
+        this.$().css('z-index', highest + 1);
+    },
+
+    didInsertElement: function() {
+        this._super();
+        this._updateZIndex();
+    },
+
     hide: function() {
         var self = this;
         clearTimeout(this.scheduleTimeout);
