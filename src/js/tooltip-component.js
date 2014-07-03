@@ -1,3 +1,5 @@
+var highestZIndex = require('highest-z-index');
+
 module.exports = Em.Component.extend({
     template: require('../templates/tooltip'),
     
@@ -36,6 +38,11 @@ module.exports = Em.Component.extend({
     isVisible: false,
     
     delay: 200,
+
+    _updateZIndex: function() {
+        var highest = highestZIndex();
+        this.$().css('z-index', highest + 1);
+    }.on('didInsertElement'),
     
     messageEl: function() {
         return this.$('.message');
@@ -71,13 +78,15 @@ module.exports = Em.Component.extend({
             position = this.get('positions')[positionName];
         this.set('position', positionName);
         position.of = view.$();
-        if (this.get('state') != 'inDOM') {
+        if (this.get('state') !== 'inDOM') {
             this.appendTo(this.container.lookup('application:main').get('rootElement'));
             this.on('didInsertElement', function() {
                 self.$().css('opacity', 0);
                 self.show(view, message, positionName);
             });
             return;
+        } else {
+            this._updateZIndex();
         }
         this.set('isVisible', true);
         this.get('messageEl').html(message);
@@ -92,7 +101,7 @@ module.exports = Em.Component.extend({
     hide: function() {
         var self = this;
         clearTimeout(this.scheduleTimeout);
-        if (this.get('state') != 'inDOM') {
+        if (this.get('state') !== 'inDOM') {
             return;
         }
         var el = this.$();
