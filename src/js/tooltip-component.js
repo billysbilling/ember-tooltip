@@ -1,12 +1,12 @@
 var highestZIndex = require('highest-z-index');
 
 module.exports = Em.Component.extend({
-    template: require('../templates/tooltip'),
-    
+    layout: require('../templates/tooltip'),
+
     classNameBindings: [':tooltip', 'positionClassName'],
 
     position: 'top',
-    
+
     positions: {
         top: {
             my: 'center bottom',
@@ -29,21 +29,21 @@ module.exports = Em.Component.extend({
             at: 'left-5 center'
         }
     },
-    
+
     positionClassName: function() {
         var pos = this.get('position').replace(/(Left|Right)$/, '');
         return 'tooltip-' + pos;
     }.property('position'),
 
     isVisible: false,
-    
+
     delay: 200,
 
     _updateZIndex: function() {
         var highest = highestZIndex();
         this.$().css('z-index', highest + 1);
     }.on('didInsertElement'),
-    
+
     messageEl: function() {
         return this.$('.message');
     }.property(),
@@ -61,7 +61,7 @@ module.exports = Em.Component.extend({
             }, this.get('delay'));
         }
     },
-    
+
     scheduleHide: function() {
         var self = this;
         clearTimeout(this.scheduleTimeout);
@@ -71,14 +71,14 @@ module.exports = Em.Component.extend({
             });
         }, this.get('delay'));
     },
-    
+
     show: function(view, message, positionName) {
         positionName = positionName || 'top';
         var self = this,
             position = this.get('positions')[positionName];
         this.set('position', positionName);
         position.of = view.$();
-        if (this.get('state') !== 'inDOM') {
+        if (this.get('_state') !== 'inDOM') {
             this.appendTo(this.container.lookup('application:main').get('rootElement'));
             this.on('didInsertElement', function() {
                 self.$().css('opacity', 0);
@@ -97,19 +97,21 @@ module.exports = Em.Component.extend({
         }, 200);
         el.position(position);
     },
-    
+
     hide: function() {
         var self = this;
         clearTimeout(this.scheduleTimeout);
-        if (this.get('state') !== 'inDOM') {
+        if (this.get('_state') !== 'inDOM') {
             return;
         }
         var el = this.$();
         el.stop(true).animate({
             opacity: 0
         }, 200, function() {
-            el.hide();
-            self.set('isVisible', false);
+            Em.run(function() {
+                el.hide();
+                self.set('isVisible', false);
+            });
         });
     }
 });
