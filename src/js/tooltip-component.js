@@ -27,6 +27,10 @@ module.exports = Em.Component.extend({
         left: {
             my: 'right center',
             at: 'left-5 center'
+        },
+        topRight: {
+            my: 'center bottom',
+            at: 'right-10 top-6'
         }
     },
 
